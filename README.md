@@ -58,7 +58,17 @@ SELECT * FROM customers_bkp;
 
 #### 7. CREATE TRIGGER FOR INSERT, UPDATE AND DELETE RECORDS
 ``` sql
--- Insert or Update trigger
+-- Syntax: Insert or Update trigger 
+CREATE OR REPLACE TRIGGER  <TRIGGER_NAME>  
+  AFTER  
+  INSERT OR UPDATE ON <SCHEMA_NAME>.<ORIGINAL_TABLENAME>  REFERENCING NEW AS <TABLE_ALIAS_NAME>
+  FOR EACH ROW  
+BEGIN  
+  DELETE FROM <SCHEMA_NAME>.<BKP_TABLENAME> WHERE <PK_FIELD_NAME> = :<TABLE_ALIAS_NAME>.<PK_FIELD_NAME>;
+  INSERT INTO <SCHEMA_NAME>.<BKP_TABLENAME> VALUES(:<TABLE_ALIAS_NAME>.<PK_FIELD_NAME>, :<TABLE_ALIAS_NAME>.<FIELD_NAME>, :<TABLE_ALIAS_NAME>.<FIELD_NAME>, :<TABLE_ALIAS_NAME>.<FIELD_NAME>);  
+END; 
+
+-- Example: Insert or Update trigger
 CREATE OR REPLACE TRIGGER  in_up_customers_trigger  
   AFTER  
   INSERT OR UPDATE ON customers  REFERENCING NEW AS cust
@@ -68,7 +78,16 @@ BEGIN
   INSERT INTO customers_bkp VALUES(:cust.customer_id, :cust.customer_name, :cust.city, :cust.createdate);  
 END; 
 
--- Delete trigger
+-- Syntax: Delete trigger 
+CREATE OR REPLACE TRIGGER  <TRIGGER_NAME>  
+  BEFORE  
+  DELETE ON <SCHEMA_NAME>.<ORIGINAL_TABLENAME>
+  FOR EACH ROW  
+BEGIN  
+  DELETE FROM <SCHEMA_NAME>.<BKP_TABLENAME> WHERE <PK_FIELD_NAME> = :old.<PK_FIELD_NAME>;
+END;
+
+-- Example: Delete trigger
 CREATE OR REPLACE TRIGGER  del_customers_trigger  
   BEFORE  
   DELETE ON customers
