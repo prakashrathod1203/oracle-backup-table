@@ -122,6 +122,6 @@ SELECT * FROM customers_bkp;
 ##### Recompiling a Trigger
 ``` sql
 ALTER TRIGGER <trigger_name> COMPILE;
-DROP TRIGGER <trigger_name>;;
+DROP TRIGGER <trigger_name>;
 
 ```
