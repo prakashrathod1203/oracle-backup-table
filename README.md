@@ -117,3 +117,11 @@ DELETE FROM customers WHERE customer_id=4;
 SELECT * FROM customers;
 SELECT * FROM customers_bkp;
 ```
+
+#### OTHER
+##### Recompiling a Trigger
+``` sql
+ALTER TRIGGER <trigger_name> COMPILE;
+DROP TRIGGER <trigger_name>;;
+
+```
